@@ -43,6 +43,7 @@ void inpt();
 void BallBaunce();
 int Random_Int(int min, int max);
 void RestartGame();
+void LaunchBall();
 
 GameObject LeftPaddle(20, 150);
 GameObject RightPaddle(20, 150);
@@ -71,6 +72,10 @@ float StartingPosBallY;
 
 float StartingPosPaddles;
 
+// general
+bool StartFromLeft = false;
+bool StartFromRight = false;
+
 void Start() {
 	Main_Engine_Window->setTitle("Engine Window");
 
@@ -96,6 +101,9 @@ void Start() {
 	StartingPosBallY = ballY;
 	StartingPosPaddles = LeftY;
 
+
+	LaunchBall();
+
 }
 
 
@@ -109,20 +117,32 @@ void LaunchBall() {
 	if (Random_Int(1, 4) == 2) {
 		ballX += speedX * DeltaTime;
 		ballY += speedY * DeltaTime;
+
+		StartFromRight = true;
 	}
 	else {
 		ballX -= speedX * DeltaTime;
 		ballY -= speedY * DeltaTime;
+
+		StartFromLeft = true;
 	}
 }
 
 void Update() {
 
+	if (StartFromLeft) {
+		ballX -= speedX * DeltaTime;
+		ballY -= speedY * DeltaTime;
+	}
+	else if (StartFromRight) {
+		ballX += speedX * DeltaTime;
+		ballY += speedY * DeltaTime;
+	}
+
+
 	Movement();
 	PaddleBounds();
 
-
-	LaunchBall();
 	BallBaunce();
 
 	LeftPaddle.SetPosition(50, LeftY);
@@ -165,6 +185,9 @@ void RestartGame() {
 
 	speedX = 0;
 	speedY = 0;
+
+	StartFromLeft = false;
+	StartFromRight = false;
 
 	speedX = General_Ball_Speed;
 	speedY = General_Ball_Speed;
