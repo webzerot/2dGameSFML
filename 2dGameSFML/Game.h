@@ -78,12 +78,12 @@ bool StartFromLeft = false;
 bool StartFromRight = false;
 
 void Start() {
-	Main_Engine_Window->setTitle("Engine Window");
+	Main_Engine_Window->setTitle("Pong");
 
-	LeftPaddle.SetColor(160, 35, 50);
+	LeftPaddle.SetColor(35, 50, 165);
 	RightPaddle.SetColor(160, 35, 50);
 
-	pongBall.SetColor(100, 10, 54);
+	pongBall.SetColor(150, 60, 110);
 
 	// Centering 
 	LeftY = (Main_Engine_Window->getSize().y / 2) - (LeftPaddle.GetRectShape().getGlobalBounds().height / 2);
@@ -124,6 +124,8 @@ void LaunchBall() {
 }
 
 void Update() {
+
+	Main_Engine_Window->clear(sf::Color(20, 1, 21));
 
 	BallBaunce();
 
