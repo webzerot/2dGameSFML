@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <Windows.h>
 
 
 #include "Engine.h"
@@ -10,6 +11,9 @@ const int Engine_Window_Height = 500;
 const std::string Engine_Window_Title = "Engine Window";
 
 int main(int argc, char* argv[]) {
+
+	// hiding console at start
+	Console::Hide();
 
 	// creating the window
 	Main_Engine_Window = new sf::RenderWindow(

@@ -4,6 +4,7 @@
 
 #include "Source/Engine.h"
 #include "Source/Globals.h"
+#include "Source/Sound.h"
 
 //// DONT WRITE CODE LIKE THIS (: ////
 
@@ -49,6 +50,8 @@ void LaunchBall();
 GameObject LeftPaddle(20, 150);
 GameObject RightPaddle(20, 150);
 Ball pongBall(20);
+//Sound LowPitchBlip("pongblipLowPitch.wav");
+//Sound HighPitchBlip("pongblipHighPitch.wav");
 
 // paddles
 float PaddleSpeed = 400;
