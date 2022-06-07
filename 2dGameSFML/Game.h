@@ -124,6 +124,8 @@ void LaunchBall() {
 
 void Update() {
 
+	BallBaunce();
+
 	if (StartFromLeft) {
 		ballX -= speedX * DeltaTime;
 		ballY -= speedY * DeltaTime;
@@ -136,8 +138,6 @@ void Update() {
 
 	Movement();
 	PaddleBounds();
-
-	BallBaunce();
 
 	LeftPaddle.SetPosition(50, LeftY);
 	RightPaddle.SetPosition((float)Main_Engine_Window->getSize().x - (float)50 - (20), RightY);
