@@ -5,6 +5,7 @@
 #include "Source/Engine.h"
 #include "Source/Globals.h"
 
+//// DONT WRITE CODE LIKE THIS (: ////
 
 class Ball {
 
@@ -39,7 +40,7 @@ public:
 
 void Movement();
 void PaddleBounds();
-void inpt();
+void input();
 void BallBaunce();
 int Random_Int(int min, int max);
 void RestartGame();
@@ -109,7 +110,7 @@ void Start() {
 
 
 void EventUpdate() {
-	inpt();
+	input();
 }
 
 void LaunchBall() {
@@ -221,7 +222,7 @@ void Movement() {
 
 }
 
-void inpt() {
+void input() {
 
 	if (Input::GetKeyDown(Key::R)) {
 		RestartGame();
