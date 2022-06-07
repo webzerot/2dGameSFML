@@ -115,15 +115,9 @@ void EventUpdate() {
 void LaunchBall() {
 
 	if (Random_Int(1, 4) == 2) {
-		ballX += speedX * DeltaTime;
-		ballY += speedY * DeltaTime;
-
 		StartFromRight = true;
 	}
 	else {
-		ballX -= speedX * DeltaTime;
-		ballY -= speedY * DeltaTime;
-
 		StartFromLeft = true;
 	}
 }

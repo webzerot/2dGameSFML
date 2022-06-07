@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
 		Engine_Window_Title,
 		sf::Style::Default);
 
-	Main_Engine_Window->setFramerateLimit(0);
+	Main_Engine_Window->setFramerateLimit(60);
 
 	Start();
 
