@@ -13,7 +13,7 @@ const std::string Engine_Window_Title = "Engine Window";
 int main(int argc, char* argv[]) {
 
 	// hiding console at start
-	Console::Hide();
+	Console::Show();
 
 	// creating the window
 	Main_Engine_Window = new sf::RenderWindow(

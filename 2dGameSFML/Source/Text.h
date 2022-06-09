@@ -19,9 +19,10 @@ public:
 	int fontSize = 10;
 	bool AutomaticDrawing = true;
 
-	Text(std::string& m_text, std::string filePath = "");
+	Text(std::string m_text, std::string filePath = "");
 	void setPosition(float x, float y);
-	void SetColor(int R, int G, int B, int A);
+	void SetColor(int R, int G, int B, int A = 255);
+	void ChangeText(std::string newText);
 
 	void Draw(sf::RenderWindow& window);
 };

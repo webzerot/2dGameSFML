@@ -1,7 +1,7 @@
 #include "Text.h"
 #include "Globals.h"
 
-Text::Text(std::string& m_text, std::string filePath) {
+Text::Text(std::string m_text, std::string filePath) {
 
 	TextObjects.push_back(this);
 
@@ -37,4 +37,8 @@ void Text::setPosition(float x, float y) {
 
 void Text::SetColor(int R, int G, int B, int A) {
 	color = sf::Color(R, G, B, A);
+}
+
+void Text::ChangeText(std::string newText) {
+	text.setString(newText);
 }

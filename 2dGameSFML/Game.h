@@ -44,12 +44,23 @@ void PaddleBounds();
 void input();
 void BallBaunce();
 int Random_Int(int min, int max);
-void RestartGame();
+void RestartGame(bool Launch);
+void CheckPoint();
 void LaunchBall();
 
 GameObject LeftPaddle(20, 150);
 GameObject RightPaddle(20, 150);
 Ball pongBall(20);
+
+Text LeftScoreText("0", "Anton.ttf");
+Text RightScoreText("0");
+
+int LeftScore = 0;
+int RightScore = 0;
+
+bool RightWon = false;
+bool LeftWon = false;
+
 //Sound LowPitchBlip("pongblipLowPitch.wav");
 //Sound HighPitchBlip("pongblipHighPitch.wav");
 
@@ -81,6 +92,7 @@ bool StartFromLeft = false;
 bool StartFromRight = false;
 
 void Start() {
+
 	Main_Engine_Window->setTitle("Pong");
 
 	LeftPaddle.SetColor(35, 50, 165);
@@ -104,6 +116,11 @@ void Start() {
 	StartingPosBallX = ballX;
 	StartingPosBallY = ballY;
 	StartingPosPaddles = LeftY;
+
+	// Text
+
+	LeftScoreText.SetColor(255, 255, 255);
+	RightScoreText.SetColor(255, 255, 255);
 
 
 	LaunchBall();
@@ -144,11 +161,14 @@ void Update() {
 
 	Movement();
 	PaddleBounds();
+	CheckPoint();
 
 	LeftPaddle.SetPosition(50, LeftY);
 	RightPaddle.SetPosition((float)Main_Engine_Window->getSize().x - (float)50 - (20), RightY);
 
 	pongBall.SetPos(ballX, ballY);
+
+	std::cout << "[+] LeftScore : " << LeftScore << " | RightScore : " << RightScore << std::endl;
 
 	pongBall.Draw(*Main_Engine_Window);
 }
@@ -177,7 +197,7 @@ void BallBaunce() {
 	}
 }
 
-void RestartGame() {
+void RestartGame(bool Launch) {
 	ballX = StartingPosBallX;
 	ballY = StartingPosBallY;
 	LeftY = StartingPosPaddles;
@@ -191,7 +211,8 @@ void RestartGame() {
 
 	speedX = General_Ball_Speed;
 	speedY = General_Ball_Speed;
-	LaunchBall();
+	if (Launch)
+		LaunchBall();
 }
 
 void PaddleBounds() {
@@ -227,10 +248,25 @@ void Movement() {
 
 }
 
+void CheckPoint() {
+	if (ballX < 0) {
+		RightScore += 1;
+		RestartGame(false);
+	}
+	else if (ballX > 700) {
+		LeftScore += 1;
+		RestartGame(false);
+	}
+}
+
 void input() {
 
+	if (Input::GetKeyDown(Key::Space)) {
+		LaunchBall();
+	}
+
 	if (Input::GetKeyDown(Key::R)) {
-		RestartGame();
+		RestartGame(true);
 	}
 
 
