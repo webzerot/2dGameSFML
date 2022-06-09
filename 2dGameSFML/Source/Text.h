@@ -16,7 +16,7 @@ private:
 
 public:
 
-	int fontSize = 10;
+	int fontSize = 30;
 	bool AutomaticDrawing = true;
 
 	Text(std::string m_text, std::string filePath = "");

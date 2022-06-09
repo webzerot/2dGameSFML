@@ -5,6 +5,8 @@ Text::Text(std::string m_text, std::string filePath) {
 
 	TextObjects.push_back(this);
 
+	String_text = m_text;
+
 	if (!filePath.empty()) {
 
 		if (!font.loadFromFile(filePath)) {
@@ -40,5 +42,5 @@ void Text::SetColor(int R, int G, int B, int A) {
 }
 
 void Text::ChangeText(std::string newText) {
-	text.setString(newText);
+	String_text = newText;
 }

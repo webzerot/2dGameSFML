@@ -1,12 +1,18 @@
 #pragma once
 #include <iostream>
-#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "Source/Engine.h"
 #include "Source/Globals.h"
 #include "Source/Sound.h"
 
 //// DONT WRITE CODE LIKE THIS (: ////
+
+// Gameplay // 
+int maxScore = 4;
+
+std::string LeftWonQuote = "Left Won";
+std::string RightWonQuote = "Right Won";
 
 class Ball {
 
@@ -47,20 +53,24 @@ int Random_Int(int min, int max);
 void RestartGame(bool Launch);
 void CheckPoint();
 void LaunchBall();
+void UpdateUiScore();
+void CheckForWinner();
+void InputAfterWin();
+void RestartAllGame();
 
 GameObject LeftPaddle(20, 150);
 GameObject RightPaddle(20, 150);
 Ball pongBall(20);
 
-Text LeftScoreText("0", "Anton.ttf");
+Text LeftScoreText("0");
 Text RightScoreText("0");
+Text WinningText("Red Won");
+Text PressSpaceToStart("Press The Spacebar");
 
 int LeftScore = 0;
 int RightScore = 0;
 
-bool RightWon = false;
-bool LeftWon = false;
-
+// sound
 //Sound LowPitchBlip("pongblipLowPitch.wav");
 //Sound HighPitchBlip("pongblipHighPitch.wav");
 
@@ -90,6 +100,13 @@ float StartingPosPaddles;
 // general
 bool StartFromLeft = false;
 bool StartFromRight = false;
+
+bool LeftWon = false;
+bool RightWon = false;
+
+bool ActiveInput = true;
+
+bool FirstRound = true;
 
 void Start() {
 
@@ -121,16 +138,33 @@ void Start() {
 
 	LeftScoreText.SetColor(255, 255, 255);
 	RightScoreText.SetColor(255, 255, 255);
+	LeftScoreText.setPosition(200, 10);
+	RightScoreText.setPosition(500, 10);
+	RightScoreText.fontSize = 50;
+	LeftScoreText.fontSize = 50;
 
+	WinningText.fontSize = 80;
+	WinningText.SetColor(255, 255, 255);
+	WinningText.setPosition(200, 200);
 
-	LaunchBall();
+	PressSpaceToStart.fontSize = 40;
+	PressSpaceToStart.SetColor(255, 255, 255);
+	PressSpaceToStart.setPosition(200, 400);
+	PressSpaceToStart.AutomaticDrawing = true;
+
+	// Disable stuff
+	WinningText.AutomaticDrawing = false;
 
 }
 
 
 
 void EventUpdate() {
-	input();
+	if (ActiveInput)
+		input();
+	if (LeftWon || RightWon) {
+		InputAfterWin();
+	}
 }
 
 void LaunchBall() {
@@ -162,6 +196,8 @@ void Update() {
 	Movement();
 	PaddleBounds();
 	CheckPoint();
+	UpdateUiScore();
+	CheckForWinner();
 
 	LeftPaddle.SetPosition(50, LeftY);
 	RightPaddle.SetPosition((float)Main_Engine_Window->getSize().x - (float)50 - (20), RightY);
@@ -215,6 +251,38 @@ void RestartGame(bool Launch) {
 		LaunchBall();
 }
 
+void RestartAllGame() {
+	ActiveInput = true;
+	WinningText.AutomaticDrawing = false;
+	PressSpaceToStart.AutomaticDrawing = true;
+	FirstRound = true;
+
+	// reseting positions
+	ballX = StartingPosBallX;
+	ballY = StartingPosBallY;
+	LeftY = StartingPosPaddles;
+	RightY = StartingPosPaddles;
+
+	// reseting scores
+	LeftScore = 0;
+	RightScore = 0;
+
+	LeftWon = false;
+	RightWon = false;
+
+	// reseting speed
+	speedX = 0;
+	speedY = 0;
+
+	// values
+	StartFromLeft = false;
+	StartFromRight = false;
+
+	speedX = General_Ball_Speed;
+	speedY = General_Ball_Speed;
+
+}
+
 void PaddleBounds() {
 	if (LeftY > maxY) {
 		LeftY = maxY;
@@ -249,6 +317,7 @@ void Movement() {
 }
 
 void CheckPoint() {
+	// checking if a player has scored
 	if (ballX < 0) {
 		RightScore += 1;
 		RestartGame(false);
@@ -257,12 +326,45 @@ void CheckPoint() {
 		LeftScore += 1;
 		RestartGame(false);
 	}
+
+
+	if (RightScore > 0 || LeftScore < 0) {
+		FirstRound = false;
+	}
+
+	if (RightScore == maxScore) {
+		LeftWon = false;
+		RightWon = true;
+	}
+
+	if (LeftScore == maxScore) {
+		RightWon = false;
+		LeftWon = true;
+	}
+}
+
+void CheckForWinner() {
+	if (RightWon) {
+		WinningText.ChangeText(RightWonQuote);
+		WinningText.AutomaticDrawing = true;
+	}
+	else if (LeftWon) {
+		WinningText.ChangeText(LeftWonQuote);
+		WinningText.AutomaticDrawing = true;
+	}
+
+}
+
+void UpdateUiScore() {
+	LeftScoreText.ChangeText(std::to_string(LeftScore));
+	RightScoreText.ChangeText(std::to_string(RightScore));
 }
 
 void input() {
 
 	if (Input::GetKeyDown(Key::Space)) {
 		LaunchBall();
+		PressSpaceToStart.AutomaticDrawing = false;
 	}
 
 	if (Input::GetKeyDown(Key::R)) {
@@ -294,6 +396,12 @@ void input() {
 	}
 	else if (Input::GetKeyUp(Key::S)) {
 		LeftPaddle.moveDown = false;
+	}
+}
+
+void InputAfterWin() {
+	if (Input::GetKeyDown(Key::Space)) {
+		RestartAllGame();
 	}
 }
 
